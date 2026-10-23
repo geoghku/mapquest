@@ -9,8 +9,8 @@
   // badge offsets (in map units) so nearby pins do not overlap; a dashed stem points to the exact spot
   const OFFSET = {
     highisland: [26, 70], sharpisland: [10, 125], taipokau: [-10, -78],
-    longvalley: [-70, -26], kaitak: [81, -67], observatory: [60, 92],
-    mongkok: [-112, -105], shatin: [99, -90], airport: [2, -71]
+    longvalley: [52, -66], kaitak: [81, -67], observatory: [60, 92],
+    mongkok: [-112, -105], northern: [-86, -40], airport: [2, -71], hzmb: [-6, 96]
   };
 
   /* ---------------- Map ---------------- */
@@ -34,6 +34,7 @@
       <path class="land-shadow" d="${MAP.land}" transform="translate(5,8)"/>
       <path class="land" d="${MAP.land}"/>
       <path class="coast-stitch" d="${MAP.land}" transform="translate(0,0)"/>
+      ${MAP.hzmb ? `<path class="bridge-casing" d="${MAP.hzmb}"/><path class="bridge-deck" d="${MAP.hzmb}"/><text class="bridge-label" x="2" y="522">◀ To Zhuhai &amp; Macao</text>` : ''}
       ${lbl(114.04, 22.445, 'New Territories', 'region')}
       ${lbl(113.93, 22.27, 'Lantau Island', 'region')}
       ${lbl(114.27, 22.165, 'South China Sea', 'sea-label')}
@@ -46,7 +47,7 @@
     const home = document.createElement('div');
     home.className = 'home';
     home.style.left = (hx / MAP.w * 100) + '%'; home.style.top = (hy / MAP.h * 100) + '%';
-    home.style.transform = 'translate(-17px,-50%)';
+    home.style.transform = 'translate(calc(-17px * var(--u)),-50%)';
     home.innerHTML = `<svg class="home-star" viewBox="0 0 24 24"><path d="M12 2l2.9 6.2 6.8.8-5 4.7 1.3 6.7L12 17l-6 3.4 1.3-6.7-5-4.7 6.8-.8z" fill="#FFC93D" stroke="#7A4E2D" stroke-width="1.8" stroke-linejoin="round"/></svg>`;
     pins.appendChild(home);
     const tag = document.createElement('div');
@@ -61,19 +62,42 @@
       b.className = 'pin'; b.dataset.id = s.id;
       b.style.left = ((x + dx) / MAP.w * 100) + '%'; b.style.top = ((y + dy) / MAP.h * 100) + '%';
       b.style.setProperty('--c', s.color); b.style.setProperty('--cd', s.dark);
-      b.style.transform = 'translate(-50%, -32px)';
+      b.style.transform = 'translate(-50%, calc(-32px * var(--u)))';
       b.setAttribute('aria-label', s.name);
-      b.innerHTML = `<span class="pin-badge"><img src="${ART.itemURL(s.items[0].key, 96)}" alt=""><kbd class="pin-key">${i + 1}</kbd></span><span class="pin-name">${(s.short || s.name.replace('Nature Reserve', '').replace('Nature Park', '').replace('International ', '').trim())}</span>`;
+      b.innerHTML = `<span class="pin-badge"><img src="${ART.itemURL(s.icon || s.items[0].key, 96)}" alt=""><kbd class="pin-key">${(i + 1) % 10}</kbd></span><span class="pin-name">${(s.short || s.name.replace('Nature Reserve', '').replace('Nature Park', '').replace('International ', '').trim())}</span>`;
       b.addEventListener('click', () => goSite(i));
       pins.appendChild(b);
     });
+    // compact list of places (shown on phones held upright, where map labels would overlap)
+    const list = $('siteList');
+    if (list) list.innerHTML = SITES.map((s, i) => `<button class="site-pick" data-i="${i}" data-id="${s.id}" style="--c:${s.color};--cd:${s.dark}"><span class="pick-key">${(i + 1) % 10}</span><img src="${ART.itemURL(s.icon || s.items[0].key, 64)}" alt=""><span class="pick-name">${s.name}</span></button>`).join('');
+    if (list) list.querySelectorAll('.site-pick').forEach(el => el.addEventListener('click', () => goSite(+el.dataset.i)));
     placeWalker(hx, hy, false);
   }
 
+  // One size factor for the whole interface: bigger on large interactive screens, a little smaller on phones
+  let uiScale = 1;
+  function isPortraitPhone() { return window.innerWidth <= 700 && window.innerHeight > window.innerWidth; }
+  function setUiScale() {
+    const vw = window.innerWidth, vh = window.innerHeight;
+    let u = Math.min(vw / 1440, vh / 810);
+    if (u > 1) u = Math.min(u, 3);
+    else if (isPortraitPhone()) u = Math.max(0.8, Math.min(1, vw / 480));
+    else u = Math.max(0.72, Math.min(1, vw / 1100, vh / 620));
+    u = Math.round(u * 100) / 100;
+    if (u !== uiScale || !document.documentElement.style.getPropertyValue('--u')) {
+      uiScale = u; document.documentElement.style.setProperty('--u', u);
+      document.body.classList.toggle('portrait-phone', isPortraitPhone());
+    }
+    document.body.classList.toggle('portrait-phone', isPortraitPhone());
+  }
+
   function fitMap() {
+    setUiScale();
     const area = $('mapArea').getBoundingClientRect();
-    const pad = 30;
-    const w = area.width - pad * 2, h = area.height - pad * 2 - 10;
+    const u = uiScale, portrait = isPortraitPhone();
+    const pad = (portrait ? 14 : 30) * u;
+    const w = area.width - pad * 2, h = (portrait ? area.height * 0.52 : area.height) - pad * 2 - 10 * u;
     const k = Math.min(w / MAP.w, h / MAP.h);
     const box = $('mapBox');
     box.style.width = (MAP.w * k) + 'px'; box.style.height = (MAP.h * k) + 'px';
@@ -89,9 +113,9 @@
   function renderStamps() {
     const el = $('stamps');
     el.innerHTML = '<span class="label">Geo Stamps</span>' + SITES.map(s => `<span class="stamp ${done[s.id] ? 'got' : ''}" data-id="${s.id}" style="--c:${s.color}" title="${s.name}"><img src="${ART.itemURL(s.items[0].key, 64)}" alt=""></span>`).join('');
-    document.querySelectorAll('.pin').forEach(p => p.classList.toggle('done', !!done[p.dataset.id]));
+    document.querySelectorAll('.pin, .site-pick').forEach(p => p.classList.toggle('done', !!done[p.dataset.id]));
     const n = Object.keys(done).length;
-    const pick = kbdMode ? 'Click a place, or press its number key (1–' + SITES.length + ')' : 'Tap a place on the map';
+    const pick = kbdMode ? 'Click a place, or press its number key (1–' + Math.min(9, SITES.length) + (SITES.length > 9 ? ', 0' : '') + ')' : 'Tap a place on the map';
     $('peekText').textContent = n === 0 ? pick + ' to jump into its adventure!' : n < SITES.length ? 'Great job! Pick another place to explore.' : 'You’ve got every Geo Stamp. Play any level again!';
   }
 
@@ -102,7 +126,7 @@
     current = s; currentIdx = i;
     const [x, y] = MAP.pts[s.id];
     placeWalker(x, y, true);
-    setTimeout(() => openSite(s), 650);
+    setTimeout(() => { if ($('gameScreen').classList.contains('hidden') && current === s) openSite(s); }, 650);
   }
 
   function openSite(s) {
@@ -161,6 +185,7 @@
     $('readyEyebrow').textContent = s.theme;
     $('readyTitle').textContent = s.name;
     $('readyText').textContent = s.hello;
+    $('readyTips').innerHTML = (s.tips || []).map(([k, t]) => `<li class="tip"><span class="key tipkey" style="--c:${s.color}">${k}</span> ${t}</li>`).join('');
     $('ovReady').classList.remove('hidden');
     blurFocus();
   }
@@ -306,8 +331,8 @@
       return;
     }
     // map screen
-    const digit = /^(Digit|Numpad)([1-9])$/.exec(code);
-    if (digit) { const i = +digit[2] - 1; if (SITES[i]) { handled(); goSite(i); } return; }
+    const digit = /^(Digit|Numpad)([0-9])$/.exec(code);
+    if (digit) { const i = (+digit[2] + 9) % 10; if (SITES[i]) { handled(); goSite(i); } return; }
     if (code === 'ArrowRight' || code === 'ArrowLeft' || code === 'ArrowDown' || code === 'ArrowUp') {
       handled();
       const pins = [...document.querySelectorAll('.pin')];
@@ -346,6 +371,17 @@
   });
   window.addEventListener('pointerup', (e) => { if (e.pointerType === 'mouse' || e.pointerType === 'pen') { if (!document.querySelector('.ctl.on')) I.jump = false; } });
   cv.addEventListener('contextmenu', (e) => e.preventDefault());
+  // Touch: tapping the scene itself also jumps (handy on big interactive screens and phones)
+  const touchIds = new Set();
+  cv.addEventListener('pointerdown', (e) => {
+    if (e.pointerType !== 'touch') return;
+    e.preventDefault();
+    if (!window.GAME.active || paused) return;
+    touchIds.add(e.pointerId);
+    if (!I.jump) I.jumpPressed = true; I.jump = true;
+  });
+  const touchEnd = (e) => { if (!touchIds.delete(e.pointerId)) return; if (!touchIds.size && !document.querySelector('.ctl.jump.on')) I.jump = false; };
+  window.addEventListener('pointerup', touchEnd); window.addEventListener('pointercancel', touchEnd);
   let lastMove = 0;
   window.addEventListener('mousemove', () => { const n = Date.now(); if (n - lastMove > 1000) { lastMove = n; poke(); } }, { passive: true });
 
@@ -378,7 +414,7 @@
     const keys = SITES.map(s => s.items[0].key);
     o.innerHTML = keys.map((k, i) => {
       const a = i / keys.length * Math.PI * 2 - Math.PI / 2;
-      return `<img src="${ART.itemURL(k, 96)}" style="left:calc(50% + ${Math.cos(a) * 46}% - 29px);top:calc(50% + ${Math.sin(a) * 46}% - 29px)" alt="">`;
+      return `<img src="${ART.itemURL(k, 96)}" style="left:calc(50% + ${Math.cos(a) * 46}% - 29px * var(--u));top:calc(50% + ${Math.sin(a) * 46}% - 29px * var(--u))" alt="">`;
     }).join('');
   }
   function resetAll() {
@@ -408,8 +444,8 @@
     poke();
   });
 
-  window.addEventListener('resize', () => { fitMap(); });
-  window.addEventListener('orientationchange', () => setTimeout(fitMap, 300));
+  window.addEventListener('resize', () => { fitMap(); if (window.GAME.active) { window.GAME.resize(); window.GAME.render(); } });
+  window.addEventListener('orientationchange', () => setTimeout(() => { fitMap(); if (window.GAME.active) { window.GAME.resize(); window.GAME.render(); } }, 300));
 
   $('doneEyebrow').textContent = 'All ' + SITES.length + ' Geo Stamps';
   buildMap();

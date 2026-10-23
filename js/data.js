@@ -13,6 +13,7 @@ window.SITES = [
     style: 'columns',
     blurb: 'When this dam was built, workers uncovered huge walls of six-sided rock columns. They formed long ago, when thick volcanic material from an ancient supervolcano cooled and cracked. Today it is a highlight of the Hong Kong UNESCO Global Geopark.',
     hello: 'Hop across the rock columns and dig up some volcanic treasures!',
+    tips: [['Vent', 'Steam vents shoot out sparks: catch them!'], ['Column', 'Ride the rising rock columns']],
     implication: { title: 'Protecting rare rocks', text: 'Rock columns like these are rare and cannot be replaced. Popular geosites have to balance visitors with protection: no climbing, no taking rocks, and take your litter home.' },
     items: [
       { key: 'hexcol', name: 'Hexagon Column', fact: 'Thick volcanic material cooled and shrank, cracking into tall six-sided columns.' },
@@ -32,6 +33,7 @@ window.SITES = [
     style: 'sandbar',
     blurb: 'At low tide a natural bar of sand and gravel appears, linking Sharp Island to the little islet of Kiu Tau. Waves and wind built this tombolo. Look out for the round “pineapple bun” rocks on the beach!',
     hello: 'The tide is out! Cross the sandbar before the waves come back.',
+    tips: [['Tide', 'Cross the sandbar only at low tide'], ['Rock', 'Wait on the rocks when the tide comes in']],
     implication: { title: 'A coast that changes', text: 'Tides and waves keep reshaping the tombolo, and crowds can trample its fragile rocks and nearby corals. Careful visitor management helps keep this coast for the future.' },
     items: [
       { key: 'pebble', name: 'Sand & Gravel', fact: 'Waves and wind carried sand and gravel here, slowly building the tombolo.' },
@@ -51,6 +53,7 @@ window.SITES = [
     style: 'forest',
     blurb: 'One of Hong Kong’s most mature forests, full of many kinds of trees, clear hill streams, forest birds and butterflies. A great place to see how a woodland ecosystem fits together.',
     hello: 'Jump from branch to branch and spot the forest’s wildlife!',
+    tips: [['Leaf', 'Catch falling leaves before they land'], ['Branch', 'Bounce on springy branches']],
     implication: { title: 'Why forests matter', text: 'These hills were once almost bare. Replanting shows how forests can return, holding soil on steep slopes, protecting streams that feed our reservoirs and giving wildlife a home.' },
     items: [
       { key: 'leaf', name: 'Forest Leaf', fact: 'Many kinds of trees grow together here, making a rich, layered forest.' },
@@ -70,6 +73,7 @@ window.SITES = [
     style: 'wetland',
     blurb: 'Hong Kong’s largest freshwater wetland: a patchwork of wet fields, ponds and marshes. Here farming and nature conservation work side by side, giving water birds and migrating birds a place to feed and rest.',
     hello: 'Hop along the field paths and help the farm and the birds!',
+    tips: [['Bird', 'Stand still near a bird to photograph it'], ['Lily', 'Lily pads sink: keep hopping!']],
     implication: { title: 'Development and nature together', text: 'As new towns grow nearby, this wetland was kept and improved as a nature park. It shows that building homes and protecting habitats can be planned side by side.' },
     items: [
       { key: 'rice', name: 'Rice Stalk', fact: 'Wet paddy fields give birds food and shelter on their long migrations.' },
@@ -89,6 +93,7 @@ window.SITES = [
     style: 'city',
     blurb: 'Planes once landed here! The old airport is becoming a new district with a sports park, a cruise terminal, waterfront parks and green buildings: a big example of planning a greener city.',
     hello: 'Race along the old runway and collect ideas for a greener city!',
+    tips: [['Plant', 'Walk over empty planters to plant trees'], ['Bike', 'Grab a bike to ride faster']],
     implication: { title: 'Reusing city land', text: 'Reusing old land, rather than building on countryside, helps a crowded city grow. A shared seawater cooling system here uses less electricity than separate air-conditioners in every building.' },
     items: [
       { key: 'tree', name: 'Street Tree', fact: 'The old airport site now has parks, gardens and a leafy waterfront.' },
@@ -108,6 +113,7 @@ window.SITES = [
     style: 'sky',
     blurb: 'On this leafy hill, weather has been watched and recorded for a very long time. These long-term records help scientists understand how Hong Kong’s climate is changing, and the Observatory forecasts the weather and warns us about storms.',
     hello: 'Bounce across the clouds and gather the weather clues!',
+    tips: [['Rain', 'Catch raindrops from the clouds'], ['Wind', 'Ride the updrafts and wind gusts']],
     implication: { title: 'Getting ready for a warmer future', text: 'Records show a warming trend, with more very hot days and heavier rainstorms expected. Hong Kong needs to adapt with better drainage, early warnings and cooler, greener streets.' },
     items: [
       { key: 'thermo', name: 'Thermometer', fact: 'Long-term temperature records help scientists track a warming climate.' },
@@ -127,6 +133,7 @@ window.SITES = [
     style: 'street',
     blurb: 'One of the most crowded places on Earth! Tall, narrow buildings line busy streets full of shops, street markets and people. Some streets even specialise, like Goldfish Street, where fish hang in bags outside the shops.',
     hello: 'Dash along the busy streets and hop over the market stalls!',
+    tips: [['Awning', 'Bounce high on the shop awnings'], ['Sign', 'Grab shop signs while they are lit']],
     implication: { title: 'Living in a crowded city', text: 'Tall buildings packed along narrow streets trap heat and traffic fumes, making Mong Kok one of the hottest spots in the city. Planners can help with greenery, wind paths between buildings and better spaces for walking.' },
     items: [
       { key: 'goldfish', name: 'Goldfish Bag', fact: 'Goldfish Street is a market street full of fish shops. Goldfish are a symbol of good luck.' },
@@ -135,22 +142,23 @@ window.SITES = [
     ]
   },
   {
-    id: 'shatin',
-    name: 'Sha Tin New Town',
-    zh: '沙田新市鎮',
-    area: 'Sha Tin',
-    theme: 'New Towns',
+    id: 'northern',
+    name: 'Northern Metropolis',
+    zh: '北部都會區',
+    area: 'San Tin',
+    theme: 'Planning Future Cities',
     color: '#2F9E8F', dark: '#1D6E63',
-    buddy: 'img/buddy_newtown.webp',
-    bg: 'img/bg_shatin.webp',
-    style: 'newtown',
-    blurb: 'Sha Tin was once a quiet bay with villages and farmland. It was turned into a planned new town on land reclaimed from the sea, with housing estates, shopping centres, parks and train links. The Shing Mun River runs straight through the middle.',
-    hello: 'Zoom along the riverside and explore a planned new town!',
-    implication: { title: 'Planning a whole town', text: 'New towns give people more space away from the crowded city centre. But many residents still travel to the urban area for work, so good rail and road links are key. The river channel also helps carry away floodwater.' },
+    buddy: 'img/buddy_northern.webp',
+    bg: 'img/bg_northern.webp',
+    style: 'metro',
+    blurb: 'Right next to the border with Shenzhen, fish ponds and villages at San Tin are being planned into a brand-new innovation and technology hub, with new homes, jobs and railways. It is the flagship project of the Northern Metropolis.',
+    hello: 'Ride the crane hooks across the building site of a future city!',
+    tips: [['Hook', 'Touch a crane hook to hang on'], ['Jump', 'Let go of the hook']],
+    implication: { title: 'Development and conservation', text: 'Building near the border brings jobs closer to where people live and links Hong Kong with Shenzhen. But some fish ponds will be filled, so a new wetland conservation park is planned to make up for lost habitat for birds.' },
     items: [
-      { key: 'estate', name: 'Housing Estate', fact: 'Planned estates gave families new homes, with schools, shops and parks close by.' },
-      { key: 'train', name: 'Train', fact: 'The railway links Sha Tin to Kowloon, so people can get to work and school quickly.' },
-      { key: 'dragonboat', name: 'Dragon Boat', fact: 'The Shing Mun River was built as a wide, straight channel. Now people row and race dragon boats on it.' }
+      { key: 'chip', name: 'Tech Chip', fact: 'New innovation and technology parks are planned here to work with the tech zone across the river in Shenzhen.' },
+      { key: 'fishpond', name: 'Fish Pond', fact: 'Fish ponds here are part of a wetland where many birds feed. A new conservation park will protect and improve them.' },
+      { key: 'train', name: 'New Railway', fact: 'New railway lines are planned so people can travel quickly to the rest of Hong Kong and to Shenzhen.' }
     ]
   },
   {
@@ -165,11 +173,33 @@ window.SITES = [
     style: 'airport',
     blurb: 'The airport sits on a huge flat island made by levelling two small hilly islands and filling in the sea around them. It connects Hong Kong with cities all over the world, for people and for goods.',
     hello: 'Hop across the airport island before your flight takes off!',
+    tips: [['Belt', 'Ride the baggage belts'], ['Dolphin', 'Watch the water to spot dolphins']],
     implication: { title: 'Connecting with the world', text: 'Flights and cargo make Hong Kong a global hub and support many jobs. But making new land from the sea takes away marine habitats, so new marine parks now protect Chinese white dolphins in nearby waters.' },
     items: [
       { key: 'plane', name: 'Aeroplane', fact: 'Flights link Hong Kong to cities around the world.' },
       { key: 'suitcase', name: 'Cargo & Luggage', fact: 'Air cargo carries goods in and out of Hong Kong, helping trade.' },
       { key: 'dolphin', name: 'Chinese White Dolphin', fact: 'These pink dolphins live in the waters around Lantau. Marine parks help protect them.' }
+    ]
+  },
+  {
+    id: 'hzmb',
+    name: 'Hong Kong–Zhuhai–Macao Bridge',
+    zh: '港珠澳大橋',
+    area: 'Lantau waters',
+    theme: 'Linking the Region',
+    color: '#4A63C9', dark: '#2E4294',
+    buddy: 'img/buddy_hzmb.webp',
+    bg: 'img/bg_hzmb.webp',
+    style: 'bridge',
+    icon: 'bridge',
+    blurb: 'A giant sea crossing over the Pearl River Estuary that links Hong Kong with Zhuhai and Macao. It is made of long bridges, two artificial islands and an undersea tunnel, so big ships can still sail through.',
+    hello: 'Hop on the shuttle buses and dive under the sea to cross the estuary!',
+    tips: [['Bus', 'Ride the moving shuttle buses'], ['Dive', 'Swim through the tunnel: tap jump to swim up']],
+    implication: { title: 'Linking the Greater Bay Area', text: 'A road link across the estuary makes trips between cities on both sides much quicker, helping people, trade and tourism. Building it in the home of Chinese white dolphins meant fewer bridge piers, ready-made parts and dolphin watchers on the work boats.' },
+    items: [
+      { key: 'bridge', name: 'Bridge Tower', fact: 'Tall cable-stayed towers hold up the bridge with steel cables, leaving wide gaps for ships below.' },
+      { key: 'shuttle', name: 'Shuttle Bus', fact: 'Cross-boundary shuttle buses carry passengers between Hong Kong, Zhuhai and Macao all day and night.' },
+      { key: 'ship', name: 'Big Ship', fact: 'Part of the crossing dives under the sea in a tunnel, so the busiest shipping channels stay open for huge ships.' }
     ]
   }
 ];
