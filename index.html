@@ -55,7 +55,8 @@
         <div class="bubble" id="peekText">Tap a place on the map to jump into its adventure!</div>
         <img src="img/buddy_point.webp" alt="">
       </div>
-      <div class="map-credit">Map outline: Hong Kong 18 districts open data · Place locations checked on Google Maps</div>
+      <div class="site-list" id="siteList" aria-label="Places to explore"></div>
+      <div class="map-credit">Coastline: Lands Department 1:50 000 topographic map (CSDI Portal) · Place locations checked on Google Maps</div>
     </main>
   </section>
 
@@ -137,12 +138,14 @@
         <p id="readyText"></p>
         <ul class="howto">
           <li class="t-touch"><span class="key">◀ ▶</span> Move</li>
-          <li class="t-touch"><span class="key">Jump</span> Hop up (hold for higher)</li>
+          <li class="t-touch"><span class="key">Jump</span> Hop up, or tap the scene (hold for higher)</li>
           <li class="t-kbd"><span class="key">← →</span> Move (or point the mouse)</li>
           <li class="t-kbd"><span class="key">Space</span> Jump (or click)</li>
           <li><span class="key">?</span> Bump blocks from below</li>
           <li><span class="key litter"></span> Jump on litter to clear it</li>
         </ul>
+        <div class="eyebrow tips-eyebrow">Special here</div>
+        <ul class="howto tips" id="readyTips"></ul>
         <button class="btn primary big" id="btnGo">Let’s go! <kbd class="hint">Enter</kbd></button>
       </div>
     </div>
